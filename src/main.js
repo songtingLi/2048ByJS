@@ -48,7 +48,6 @@ function createOneNumber(){
 
 //创建16个新的div用于展示二维数组的数字变化
 function updateBorad(){
-    // deleteCell();
     console.log(borad);
     for(let i=0 ; i<4 ; i++){
         for(let j=0; j<4 ; j++){
@@ -128,8 +127,9 @@ document.onkeydown = function(event){
     switch (event.code){
         case "ArrowLeft" :
             console.log("左");
-            deleteCell1();
-            // runLeft();
+            runLeft();
+            deleteCell();
+            updateBorad();
             break;
         case "ArrowUp" :
             console.log("上");
@@ -169,8 +169,6 @@ function runLeft(){
             }
         }
     }
-    // console.log("left后的"+borad);
-    // updateBorad();
     return true;
 }
 function runTop(){
@@ -216,7 +214,7 @@ document.getElementsByTagName()
 如下classname获取的cCell是一个动态的元素集合，一开始长度为16，这里的操作代码为
 删除自身，所以当循环进行一次时，长度就-1，所以到cCell[9]时元素数组已经不够长了。
 */
-function deleteCell1(){
+function deleteCell(){
     // let gCell = document.getElementById("gameCon");
     let cCell = Array.from(document.getElementsByClassName("boradCell"));
     // console.log(cCell);
@@ -226,11 +224,11 @@ function deleteCell1(){
     }
 }
 
-function deleteCell(){
-    for(let i=0 ; i<4 ; i++){
-        for(let j=0 ; j<4 ; j++){
-            let cCell = document.getElementById("boradCell-"+i+"-"+j);
-            cCell.remove();
-        }
-    }
-}
+// function deleteCell(){
+//     for(let i=0 ; i<4 ; i++){
+//         for(let j=0 ; j<4 ; j++){
+//             let cCell = document.getElementById("boradCell-"+i+"-"+j);
+//             cCell.remove();
+//         }
+//     }
+// }
