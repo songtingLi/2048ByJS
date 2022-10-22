@@ -1,11 +1,18 @@
 let borad = new Array(4);
+let score = 0;
 window.onload = function(){
     init();
 }
 
 //用于初始化生成二维数组和设定样式
 function init(){
-    console.log("123");
+    let nowS = document.querySelector(".nowScore");
+    let mostS = document.querySelector(".mostScore");
+    if(nowS.innerText > mostS.innerText){
+        mostS.innerText = nowS.innerText;
+    }
+    nowS.innerText = "0";
+    console.log("!初始化开始!");
     for(let i=0; i<4 ; i++){
         borad[i] = new Array(4);
         for(let j=0 ; j<4 ; j++){
@@ -81,10 +88,12 @@ function updateBorad(){
         }
     }
 }
+
 //获取上的高度
 function setTop(randx){
     return 20+randx*120 + "px";
 }
+
 //获取相对左的距离
 function setLeft(randy){
     return 20+randy*120 + "px";
@@ -94,40 +103,42 @@ function setLeft(randy){
 function setBgc(boradNumber){
     switch(boradNumber){
         case 2:
-            return "red";
+            return "#FFE4E1";
             break;
         case 4:
-            return "orange";
+            return "#FA8072";
             break;
         case 8:
-            return "yellow";
+            return "#BA55D3";
             break;
         case 16:
-            return "green";
+            return "#EED5B7";
             break;
         case 32:
-            return "blue";
+            return "#8EE5EE";
             break;
         case 64:
-            return "purple";
+            return "#76EEC6";
             break;
         case 128:
-            return "pink";
+            return "#4EEE94";
             break;
         case 256:
-            return "brown";
+            return "#B3EE3A";
             break;
         case 512:
-            return "mauve";
+            return "#EEEE00";
             break;
         case 1024:
-            return "maroon";
+            return "#EE7600";
             break;
         case 2048:
             return "gold";
             break;
     }
 }
+
+//检测键盘移动事件
 document.onkeydown = function(event){
     switch (event.code){
         case "ArrowLeft" :
@@ -163,11 +174,12 @@ document.onkeydown = function(event){
             break;
     }
 }
+
+//向左移动逻辑
 function runLeft(){
     if(!isCanMoveLeft(borad)){
-        // alert("!!!无法向左移动游戏结束!!!");
-        // init();
-        return false;
+        alert("!!!无法向左移动游戏结束!!!");
+        init();
     }
     for(let i=0; i<4 ; i++){
         for(let j=1 ; j<4 ; j++){
@@ -188,6 +200,8 @@ function runLeft(){
                             left:setLeft(k)
                         },300);
                         borad[i][k] += borad[i][j];
+                        score += borad[i][j];
+                        document.querySelector(".nowScore").innerHTML = score;
                         borad[i][j] = 0;
                     }
                 }
@@ -196,11 +210,12 @@ function runLeft(){
     }
     return true;
 }
+
+//向上移动逻辑
 function runTop(){
     if(!isCanMoveTop(borad)){
-        // alert("!!!无法向上移动游戏结束!!!");
-        // init();
-        return false;
+        alert("!!!无法向上移动游戏结束!!!");
+        init();
     }
     for(let i=1; i<4 ; i++){
         for(let j=0 ; j<4 ; j++){
@@ -221,6 +236,8 @@ function runTop(){
                             left:setLeft(j)
                         });
                         borad[k][j] += borad[i][j];
+                        score += borad[i][j];
+                        document.querySelector(".nowScore").innerHTML = score;
                         borad[i][j] = 0;
                     }
                 }
@@ -229,9 +246,12 @@ function runTop(){
     }
     return true;
 }
+
+//向右移动逻辑
 function runRight(){
     if(!isCanMoveRight(borad)){
-        return false;
+        alert("!!!无法向右移动游戏结束!!!");
+        init();
     }
     for(let i=0; i<4 ; i++){
         for(let j=2 ; j>=0 ; j--){
@@ -252,6 +272,8 @@ function runRight(){
                             left:setLeft(k)
                         },300);
                         borad[i][k] += borad[i][j];
+                        score += borad[i][j];
+                        document.querySelector(".nowScore").innerHTML = score;
                         borad[i][j] = 0;
                     }
                 }
@@ -260,9 +282,12 @@ function runRight(){
     }
     return true;
 }
-function runDown(){
+
+//向下移动逻辑
+function runDown(){ 
     if(!isCanMoveDown(borad)){
-        return false;
+        alert("!!!无法向下移动游戏结束!!!");
+        init();
     }
     for(let i=2; i>=0 ; i--){
         for(let j=0 ; j<4 ; j++){
@@ -283,6 +308,8 @@ function runDown(){
                             left:setLeft(j)
                         });
                         borad[k][j] += borad[i][j];
+                        score += borad[i][j];
+                        document.querySelector(".nowScore").innerHTML = score;
                         borad[i][j] = 0;
                     }
                 }
@@ -291,6 +318,7 @@ function runDown(){
     }
     return true;
 }
+
 //在左移动之前判断是否能够向左移动
 function isCanMoveLeft(borad){
     for(let i=0 ; i<4 ; i++){
@@ -302,6 +330,7 @@ function isCanMoveLeft(borad){
     }
     return false;
 }
+
 //向上移动之前判断是否能够向上移动
 function isCanMoveTop(borad){
     for(let i=1 ; i<4 ; i++){
@@ -313,6 +342,7 @@ function isCanMoveTop(borad){
     }
     return false;
 }
+
 //向右移动之前判断是否能够向右移动
 //向右移动的时候对于y的循环应该从大到小即从右向左遍历
 //若从左向右，该值的右边的值若右移，该值却还留在原地。
@@ -326,6 +356,7 @@ function isCanMoveRight(borad){
     }
     return false;
 }
+
 //向下移动之前判断是否能够向下移动
 //与向右移动同理
 function isCanMoveDown(borad){
@@ -338,6 +369,7 @@ function isCanMoveDown(borad){
     }
     return false;
 }
+
 //判断两个目标值水平之间的值是否为0
 function noBlokHorCol(row,col1,col2,borad){
     for(let i = col1+1 ; i<col2 ; i++){
@@ -347,6 +379,7 @@ function noBlokHorCol(row,col1,col2,borad){
     }
     return true;
 }
+
 //判断两个目标值垂直之间的值是否为0
 function noBlokVerCol(row1,row2,col1,borad){
     for(let i = row1+1 ; i<row2 ; i++){
@@ -356,6 +389,7 @@ function noBlokVerCol(row1,row2,col1,borad){
     }
     return true;
 }
+
 /*非动态获取元素 ：在没有生成这个元素之前不能获取到
 document.getElementById()
 document.querySelector()
@@ -370,6 +404,7 @@ document.getElementsByTagName()
 如下classname获取的cCell是一个动态的元素集合，一开始长度为16，这里的操作代码为
 删除自身，所以当循环进行一次时，长度就-1，所以到cCell[9]时元素数组已经不够长了。
 */
+
 //动态遍历，结果为元素的集合。需要使用Array.from方法转成普通数组
 // function deleteCell(){
 //     // let gCell = document.getElementById("gameCon");
@@ -389,6 +424,7 @@ document.getElementsByTagName()
 //         }
 //     }
 // }
+
 //静态遍历
 function deleteCell(){
     let cCell = document.querySelectorAll(".boradCell");
